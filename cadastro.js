@@ -1,3 +1,5 @@
+import { adicionarClienteNaLista } from './ui.js';
+
 const listaDeClientes = document.getElementById('lista-clientes');
 const formCadastro = document.getElementById('form-cadastro');
 const inputNome = document.getElementById('nome');
@@ -24,7 +26,7 @@ formCadastro.addEventListener('submit', (event) => {
     })
     .then((response) => response.json())
     .then((clienteCadastrado) => {
-        adicionarClienteNaLista(clienteCadastrado);
+        adicionarClienteNaLista(clienteCadastrado, listaDeClientes);
         formCadastro.reset();
     })
 
@@ -38,13 +40,7 @@ fetch('https://crudcrud.com/api/d0c9f1e6f26b414597a96ceaf50573ea/cadastro')
 .then((listaClientes) => {
     console.log(listaClientes);
     listaClientes.forEach((cliente) => {
-        adicionarClienteNaLista(cliente);
+        adicionarClienteNaLista(cliente, listaDeClientes);
     })
     .catch(error => console.error('Erro ao buscar clientes:', error));
 })
-
-function adicionarClienteNaLista(cliente) {
-    const li = document.createElement('li');
-    li.innerHTML = `Nome: ${cliente.nome} | Email: ${cliente.email} <button>Excluir</button>`;
-    listaDeClientes.appendChild(li);
-}
