@@ -5,6 +5,7 @@ const formCadastro = document.getElementById('form-cadastro');
 const inputNome = document.getElementById('nome');
 const inputEmail = document.getElementById('email');
 
+//Incluir cliente na lista
 formCadastro.addEventListener('submit', (event) => {
     event.preventDefault();
 
@@ -41,9 +42,9 @@ fetch('https://crudcrud.com/api/d0c9f1e6f26b414597a96ceaf50573ea/cadastro')
     console.log(listaClientes);
     listaClientes.forEach((cliente) => {
         adicionarClienteNaLista(cliente, listaDeClientes);
-    })
-    .catch(error => console.error('Erro ao buscar clientes:', error));
+    });
 })
+.catch(error => console.error('Erro ao buscar clientes:', error));
 
 
 // Configuração do botão de excluir
