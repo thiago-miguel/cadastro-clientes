@@ -44,3 +44,13 @@ fetch('https://crudcrud.com/api/d0c9f1e6f26b414597a96ceaf50573ea/cadastro')
     })
     .catch(error => console.error('Erro ao buscar clientes:', error));
 })
+
+
+// Configuração do botão de excluir
+// Criação de botão de excluir todos ; Botão só aparece quando tem pelo menos um cliente na lista
+// Testar inserir cliente via Postman e ver aparecer no Live Server
+// Criar CSS
+// Criar verificações via console.log
+// Criar funcionalidade de listar clientes => eles não aparecem ao recarregar a página
+// Criar botão de ocultar lista de clientes
+// Estudar a possibilidade de ter a funcionalidade de editar cliente
