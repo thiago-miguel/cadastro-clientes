@@ -88,7 +88,7 @@ function excluirTodosClientes() {
             listaDeClientes.innerHTML = '';
 
             atualizarUI(listaDeClientes, msgSemClientes);
-            atualizarEstadoBotaoExcluirTodos(btnExcluirTodos, listaClientes);
+            atualizarEstadoBotaoExcluirTodos(btnExcluirTodos, listaDeClientes);
         })
         .catch(err => console.error('Erro ao excluir todos:', err));
 }
