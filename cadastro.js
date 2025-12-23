@@ -33,7 +33,7 @@ formCadastro.addEventListener('submit', (event) => {
     console.log('Tentando cadastrar cliente:', novoCliente);
 
     //POST
-    fetch('https://crudcrud.com/api/81c953c991be4161a2108297318bb2c3/cadastro', {
+    fetch('https://crudcrud.com/api/86a3419b74d54ac788a22363ddd2392f/cadastro', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -57,7 +57,7 @@ formCadastro.addEventListener('submit', (event) => {
 //GET
 let listaClientes = [];
 console.log('Carregando clientes da API...');
-fetch('https://crudcrud.com/api/81c953c991be4161a2108297318bb2c3/cadastro')
+fetch('https://crudcrud.com/api/86a3419b74d54ac788a22363ddd2392f/cadastro')
 .then(response => response.json())
 .then((clientes) => {
     console.log('Clientes carregados:', clientes);
@@ -77,7 +77,7 @@ btnExcluirTodos.addEventListener('click', () => {
 function excluirTodosClientes() {
     const deletions = listaClientes.map(cliente =>
         fetch(
-            `https://crudcrud.com/api/81c953c991be4161a2108297318bb2c3/cadastro/${cliente._id}`,
+            `https://crudcrud.com/api/86a3419b74d54ac788a22363ddd2392f/cadastro/${cliente._id}`,
             { method: 'DELETE' }
         )
     );
@@ -94,8 +94,6 @@ function excluirTodosClientes() {
 }
 
 
-// Criação de botão de excluir todos ; Botão só aparece quando tem pelo menos um cliente na lista
 // Testar inserir cliente via Postman e ver aparecer no Live Server
 // Criar CSS
-// Criar verificações via console.log
 // Estudar a possibilidade de ter a funcionalidade de editar cliente

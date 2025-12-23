@@ -29,7 +29,7 @@ export function adicionarClienteNaLista(cliente, lista, mensagemVazia) {
 //DELETE
 function excluirCliente(id, li, lista, mensagemVazia) {
   fetch(
-    `https://crudcrud.com/api/81c953c991be4161a2108297318bb2c3/cadastro/${id}`,
+    `https://crudcrud.com/api/86a3419b74d54ac788a22363ddd2392f/cadastro/${id}`,
     {
       method: "DELETE",
     }
