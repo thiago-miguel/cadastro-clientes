@@ -1,5 +1,8 @@
 import { adicionarClienteNaLista } from './ui.js';
 import { inicializarToggleClientes } from './ui.js';
+import { atualizarEstadoBotaoExcluirTodos } from './ui.js';
+import { atualizarUI } from './ui.js';
+
 
 const btnToggle = document.getElementById('btn-toggle-clientes');
 const listaDeClientes = document.getElementById('lista-clientes');
@@ -7,6 +10,7 @@ const formCadastro = document.getElementById('form-cadastro');
 const inputNome = document.getElementById('nome');
 const inputEmail = document.getElementById('email');
 const msgSemClientes = document.getElementById('msg-sem-clientes');
+const btnExcluirTodos = document.getElementById('excluir-todos');
 
 inicializarToggleClientes(
     btnToggle,
@@ -40,7 +44,10 @@ formCadastro.addEventListener('submit', (event) => {
     .then((clienteCadastrado) => {
         console.log('Cliente cadastrado com sucesso:', clienteCadastrado);
         adicionarClienteNaLista(clienteCadastrado, listaDeClientes, msgSemClientes);
+        listaClientes.push(clienteCadastrado);
+        atualizarEstadoBotaoExcluirTodos(btnExcluirTodos, listaDeClientes);
         formCadastro.reset();
+        inputNome.focus();
     })
 
     .catch(error => console.error('Erro ao cadastrar cliente (possivelmente limite da API CrudCrud excedido):', error));
@@ -48,16 +55,43 @@ formCadastro.addEventListener('submit', (event) => {
 });
 
 //GET
+let listaClientes = [];
 console.log('Carregando clientes da API...');
 fetch('https://crudcrud.com/api/81c953c991be4161a2108297318bb2c3/cadastro')
 .then(response => response.json())
-.then((listaClientes) => {
-    console.log('Clientes carregados:', listaClientes);
-    listaClientes.forEach((cliente) => {
+.then((clientes) => {
+    console.log('Clientes carregados:', clientes);
+    listaClientes = clientes;
+    clientes.forEach((cliente) => {
         adicionarClienteNaLista(cliente, listaDeClientes, msgSemClientes);
     });
+    atualizarEstadoBotaoExcluirTodos(btnExcluirTodos, listaDeClientes);
 })
 .catch(error => console.error('Erro ao buscar clientes (possivelmente limite da API CrudCrud excedido):', error));
+
+// Botão Excluir Todos
+btnExcluirTodos.addEventListener('click', () => {
+    excluirTodosClientes();
+});
+
+function excluirTodosClientes() {
+    const deletions = listaClientes.map(cliente =>
+        fetch(
+            `https://crudcrud.com/api/81c953c991be4161a2108297318bb2c3/cadastro/${cliente._id}`,
+            { method: 'DELETE' }
+        )
+    );
+
+    Promise.all(deletions)
+        .then(() => {
+            listaClientes = [];
+            listaDeClientes.innerHTML = '';
+
+            atualizarUI(listaDeClientes, msgSemClientes);
+            atualizarEstadoBotaoExcluirTodos(btnExcluirTodos, listaClientes);
+        })
+        .catch(err => console.error('Erro ao excluir todos:', err));
+}
 
 
 // Criação de botão de excluir todos ; Botão só aparece quando tem pelo menos um cliente na lista

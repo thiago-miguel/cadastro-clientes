@@ -42,7 +42,6 @@ function excluirCliente(id, li, lista, mensagemVazia) {
 }
 
 // Botão de mostrar/ocultar clientes
-
 export function inicializarToggleClientes(botao, lista, mensagemVazia) {
 
   botao.addEventListener("click", () => {
@@ -57,7 +56,7 @@ export function inicializarToggleClientes(botao, lista, mensagemVazia) {
 }
 
 // Atualiza a UI para mostrar ou esconder a mensagem de "sem clientes"
-function atualizarUI(lista, mensagemVazia) {
+export function atualizarUI(lista, mensagemVazia) {
   if (!clientesVisiveis) {
     lista.classList.add("hidden");
     mensagemVazia.classList.add("hidden");
@@ -71,4 +70,9 @@ function atualizarUI(lista, mensagemVazia) {
     lista.classList.remove("hidden");
     mensagemVazia.classList.add("hidden");
   }
+}
+
+// UI do Botão Excluir Todos
+export function atualizarEstadoBotaoExcluirTodos(botao, lista) {
+    botao.disabled = lista.children.length === 0;
 }
