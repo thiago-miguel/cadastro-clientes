@@ -29,7 +29,7 @@ formCadastro.addEventListener('submit', (event) => {
     console.log('Tentando cadastrar cliente:', novoCliente);
 
     //POST
-    fetch('https://crudcrud.com/api/d0c9f1e6f26b414597a96ceaf50573ea/cadastro', {
+    fetch('https://crudcrud.com/api/81c953c991be4161a2108297318bb2c3/cadastro', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ formCadastro.addEventListener('submit', (event) => {
 
 //GET
 console.log('Carregando clientes da API...');
-fetch('https://crudcrud.com/api/d0c9f1e6f26b414597a96ceaf50573ea/cadastro')
+fetch('https://crudcrud.com/api/81c953c991be4161a2108297318bb2c3/cadastro')
 .then(response => response.json())
 .then((listaClientes) => {
     console.log('Clientes carregados:', listaClientes);
