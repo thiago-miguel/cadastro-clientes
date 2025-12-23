@@ -1,0 +1,9 @@
+.hidden {
+    display: none;
+}
+
+#msg-sem-clientes {
+    margin-top: 10px;
+    font-style: italic;
+    color: #666;
+}
