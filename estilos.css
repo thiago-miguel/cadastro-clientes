@@ -7,3 +7,31 @@
     font-style: italic;
     color: #666;
 }
+
+/* Edição inline */
+.cliente-nome-input,
+.cliente-email-input {
+    border: 1px solid #ccc;
+    padding: 2px 4px;
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+.btn-editar,
+.btn-excluir,
+.btn-salvar,
+.btn-cancelar {
+    margin-left: 5px;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.btn-salvar {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-cancelar {
+    background-color: #f44336;
+    color: white;
+}

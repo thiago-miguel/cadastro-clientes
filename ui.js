@@ -1,6 +1,6 @@
 let clientesVisiveis = false;
 
-export function adicionarClienteNaLista(cliente, lista, mensagemVazia, onExcluir) {
+export function adicionarClienteNaLista(cliente, lista, mensagemVazia, onExcluir, onEditar) {
   const li = document.createElement("li");
   li.classList.add("cliente");
 
@@ -16,11 +16,19 @@ export function adicionarClienteNaLista(cliente, lista, mensagemVazia, onExcluir
   botaoExcluir.classList.add("btn-excluir");
   botaoExcluir.textContent = "Excluir";
 
+  const botaoEditar = document.createElement("button");
+  botaoEditar.classList.add("btn-editar");
+  botaoEditar.textContent = "Editar";
+
   botaoExcluir.addEventListener("click", () => {
     onExcluir(cliente._id, li, lista, mensagemVazia);
   });
 
-  li.append(spanNome, spanEmail, botaoExcluir);
+  botaoEditar.addEventListener("click", () => {
+    onEditar(cliente._id, li, lista, mensagemVazia);
+  });
+
+  li.append(spanNome, spanEmail, botaoExcluir, botaoEditar);
   lista.appendChild(li);
 
   atualizarUI(lista, mensagemVazia);

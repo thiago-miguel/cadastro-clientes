@@ -32,6 +32,91 @@ function handleExcluirCliente(id, li, lista, mensagemVazia) {
     .catch((error) => console.error("Erro ao excluir cliente:", error));
 }
 
+// EDIT
+function handleEditarCliente(id, li, lista, mensagemVazia) {
+  const spanNome = li.querySelector('.cliente-nome');
+  const spanEmail = li.querySelector('.cliente-email');
+  const botaoEditar = li.querySelector('.btn-editar');
+
+  // Salva valores originais
+  const nomeOriginal = spanNome.textContent;
+  const emailOriginal = spanEmail.textContent;
+
+  // Cria inputs
+  const inputNome = document.createElement('input');
+  inputNome.type = 'text';
+  inputNome.value = nomeOriginal;
+  inputNome.classList.add('cliente-nome-input');
+
+  const inputEmail = document.createElement('input');
+  inputEmail.type = 'email';
+  inputEmail.value = emailOriginal;
+  inputEmail.classList.add('cliente-email-input');
+
+  // Substitui spans por inputs
+  spanNome.replaceWith(inputNome);
+  spanEmail.replaceWith(inputEmail);
+
+  // Muda botão para "Salvar"
+  botaoEditar.textContent = 'Salvar';
+  botaoEditar.classList.add('btn-salvar');
+
+  // Cria botão "Cancelar"
+  const botaoCancelar = document.createElement('button');
+  botaoCancelar.textContent = 'Cancelar';
+  botaoCancelar.classList.add('btn-cancelar');
+  botaoCancelar.addEventListener('click', () => {
+    // Volta para spans
+    inputNome.replaceWith(spanNome);
+    inputEmail.replaceWith(spanEmail);
+    botaoEditar.textContent = 'Editar';
+    botaoEditar.classList.remove('btn-salvar');
+    botaoCancelar.remove();
+  });
+
+  // Adiciona botão Cancelar
+  li.appendChild(botaoCancelar);
+
+  // Função para salvar
+  const salvar = () => {
+    const novoNome = inputNome.value.trim();
+    const novoEmail = inputEmail.value.trim();
+
+    if (novoNome && novoEmail) {
+      fetch(
+        `https://crudcrud.com/api/5cd5f13f6e654dccba31c19b9ee894ee/cadastro/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ nome: novoNome, email: novoEmail })
+        }
+      )
+        .then(() => {
+          // Atualiza array
+          const clienteIndex = listaClientes.findIndex(cliente => cliente._id === id);
+          if (clienteIndex !== -1) {
+            listaClientes[clienteIndex].nome = novoNome;
+            listaClientes[clienteIndex].email = novoEmail;
+          }
+          // Atualiza UI
+          spanNome.textContent = novoNome;
+          spanEmail.textContent = novoEmail;
+          inputNome.replaceWith(spanNome);
+          inputEmail.replaceWith(spanEmail);
+          botaoEditar.textContent = 'Editar';
+          botaoEditar.classList.remove('btn-salvar');
+          botaoCancelar.remove();
+        })
+        .catch((error) => console.error("Erro ao editar cliente:", error));
+    }
+  };
+
+  // Event listener para salvar (once para evitar múltiplos)
+  botaoEditar.addEventListener('click', salvar, { once: true });
+}
+
 inicializarToggleClientes(
     btnToggle,
     listaDeClientes,
@@ -63,7 +148,7 @@ formCadastro.addEventListener('submit', (event) => {
     .then((response) => response.json())
     .then((clienteCadastrado) => {
         console.log('Cliente cadastrado com sucesso:', clienteCadastrado);
-        adicionarClienteNaLista(clienteCadastrado, listaDeClientes, msgSemClientes, handleExcluirCliente);
+        adicionarClienteNaLista(clienteCadastrado, listaDeClientes, msgSemClientes, handleExcluirCliente, handleEditarCliente);
         listaClientes.push(clienteCadastrado);
         atualizarEstadoBotaoExcluirTodos(btnExcluirTodos, listaDeClientes);
         formCadastro.reset();
@@ -83,7 +168,7 @@ fetch('https://crudcrud.com/api/5cd5f13f6e654dccba31c19b9ee894ee/cadastro')
     console.log('Clientes carregados:', clientes);
     listaClientes = clientes;
     clientes.forEach((cliente) => {
-        adicionarClienteNaLista(cliente, listaDeClientes, msgSemClientes, handleExcluirCliente);
+        adicionarClienteNaLista(cliente, listaDeClientes, msgSemClientes, handleExcluirCliente, handleEditarCliente);
     });
     atualizarEstadoBotaoExcluirTodos(btnExcluirTodos, listaDeClientes);
 })
