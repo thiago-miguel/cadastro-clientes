@@ -34,7 +34,7 @@ function handleExcluirCliente(id, li, lista, mensagemVazia) {
 
 // EDITAR
 function handleEditarCliente(id, li) {
-  // Callback para salvar: faz o fetch PUT
+  // PUT: Callback para salvar
   const salvarCallback = (novoNome, novoEmail, onSuccess) => {
     fetch(`https://crudcrud.com/api/af4ab06f9272443899a6c8672e50e05e/cadastro/${id}`, {
       method: 'PUT',
@@ -138,6 +138,3 @@ function excluirTodosClientes() {
         })
         .catch(err => console.error('Erro ao excluir todos:', err));
 }
-
-// Criar CSS
-// Estudar a possibilidade de ter a funcionalidade de editar cliente

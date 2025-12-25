@@ -1,29 +1,177 @@
-.hidden {
-    display: none;
+/* Reset simples */
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-#msg-sem-clientes {
+/* Fundo da página */
+body {
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Container principal */
+.container {
+    background-color: #fff;
+    width: 100%;
+    max-width: 700px;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Título */
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* Formulário */
+form {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+form label {
+    align-self: center;
+    font-weight: bold;
+}
+
+form input {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Botão cadastrar ocupa linha inteira */
+form button {
+    grid-column: 1 / -1;
     margin-top: 10px;
+    padding: 8px;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #125aa0;
+}
+
+/* Focus */
+input:focus,
+button:focus {
+    outline: 2px solid #1976d2;
+    outline-offset: 1px;
+}
+
+/* Botões principais */
+#btn-toggle-clientes,
+#excluir-todos {
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+#btn-toggle-clientes {
+    background-color: #555;
+    color: white;
+}
+
+#btn-toggle-clientes:hover {
+    background-color: #333;
+}
+
+#excluir-todos {
+    background-color: #d32f2f;
+    color: white;
+}
+
+#excluir-todos:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.acoes-clientes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.acoes-lista {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Mensagem de lista vazia */
+#msg-sem-clientes {
+    margin-top: 15px;
     font-style: italic;
     color: #666;
 }
 
-/* Edição inline */
-.cliente-nome-input,
-.cliente-email-input {
-    border: 1px solid #ccc;
-    padding: 2px 4px;
-    margin-right: 5px;
-    font-size: 14px;
+/* Lista */
+#lista-clientes {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
 }
 
+/* Item da lista */
+#lista-clientes li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Spans */
+.cliente-nome,
+.cliente-email {
+    flex: 1;
+}
+
+/* Inputs de edição */
+.cliente-nome-input,
+.cliente-email-input {
+    flex: 1;
+    border: 1px solid #ccc;
+    padding: 4px 6px;
+    border-radius: 4px;
+}
+
+/* Botões de ação */
 .btn-editar,
 .btn-excluir,
 .btn-salvar,
 .btn-cancelar {
-    margin-left: 5px;
-    padding: 4px 8px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: none;
     cursor: pointer;
+    font-size: 13px;
+}
+
+.btn-editar {
+    background-color: #0288d1;
+    color: white;
+}
+
+.btn-excluir {
+    background-color: #757575;
+    color: white;
 }
 
 .btn-salvar {
@@ -34,4 +182,17 @@
 .btn-cancelar {
     background-color: #f44336;
     color: white;
+}
+
+/* Hover nos botões */
+.btn-editar:hover,
+.btn-excluir:hover,
+.btn-salvar:hover,
+.btn-cancelar:hover {
+    opacity: 0.85;
+}
+
+/* Utilitário */
+.hidden {
+    display: none;
 }
