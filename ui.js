@@ -20,18 +20,106 @@ export function adicionarClienteNaLista(cliente, lista, mensagemVazia, onExcluir
   botaoEditar.classList.add("btn-editar");
   botaoEditar.textContent = "Editar";
 
-  botaoExcluir.addEventListener("click", () => {
-    onExcluir(cliente._id, li, lista, mensagemVazia);
-  });
-
-  botaoEditar.addEventListener("click", () => {
-    onEditar(cliente._id, li, lista, mensagemVazia);
-  });
-
   li.append(spanNome, spanEmail, botaoExcluir, botaoEditar);
+
+  // Listener para excluir
+  botaoExcluir.addEventListener('click', () => onExcluir(cliente._id, li, lista, mensagemVazia));
+
+  // Configura o botão editar com lógica de UI
+  const onSalvar = onEditar(cliente._id, li); // onEditar é handleEditarCliente, retorna salvarCallback
+  configurarBotaoEditar(botaoEditar, li, spanNome, spanEmail, onSalvar);
+
   lista.appendChild(li);
 
   atualizarUI(lista, mensagemVazia);
+}
+
+// Configura o botão editar com toggle de UI
+function configurarBotaoEditar(botaoEditar, li, spanNome, spanEmail, onSalvar) {
+  // Verifica se já existe botão Cancelar, senão cria
+  let botaoCancelar = li.querySelector('.btn-cancelar');
+  if (!botaoCancelar) {
+    botaoCancelar = document.createElement('button');
+    botaoCancelar.textContent = 'Cancelar';
+    botaoCancelar.classList.add('btn-cancelar');
+    botaoCancelar.style.display = 'none';
+    li.appendChild(botaoCancelar);
+  }
+
+  // Função para alternar edição
+  const toggleEdicao = () => {
+    const emEdicao = botaoEditar.dataset.emEdicao === 'true';
+
+    if (!emEdicao) {
+      // ENTRAR EM MODO EDIÇÃO
+      botaoEditar.dataset.emEdicao = 'true';
+
+      const nomeOriginal = spanNome.textContent;
+      const emailOriginal = spanEmail.textContent;
+
+      const inputNome = document.createElement('input');
+      inputNome.value = nomeOriginal;
+      inputNome.classList.add('cliente-nome-input');
+
+      const inputEmail = document.createElement('input');
+      inputEmail.value = emailOriginal;
+      inputEmail.classList.add('cliente-email-input');
+
+      spanNome.replaceWith(inputNome);
+      spanEmail.replaceWith(inputEmail);
+
+      botaoEditar.textContent = 'Salvar';
+      botaoEditar.classList.add('btn-salvar');
+      botaoCancelar.style.display = 'inline-block';
+    } else {
+      // SALVAR: chama callback
+      const inputNome = li.querySelector('.cliente-nome-input');
+      const inputEmail = li.querySelector('.cliente-email-input');
+
+      const novoNome = inputNome.value.trim();
+      const novoEmail = inputEmail.value.trim();
+
+      if (novoNome && novoEmail) {
+        onSalvar(novoNome, novoEmail, () => {
+          // Callback de sucesso: atualizar UI
+          spanNome.textContent = novoNome;
+          spanEmail.textContent = novoEmail;
+          inputNome.replaceWith(spanNome);
+          inputEmail.replaceWith(spanEmail);
+          botaoEditar.textContent = 'Editar';
+          botaoEditar.classList.remove('btn-salvar');
+          botaoCancelar.style.display = 'none';
+          botaoEditar.dataset.emEdicao = 'false';
+        });
+      }
+    }
+  };
+
+  // Listener único para o botão Editar
+  if (!botaoEditar.hasListener) {
+    botaoEditar.addEventListener('click', toggleEdicao);
+    botaoEditar.hasListener = true;
+  }
+
+  // Listener para Cancelar (único)
+  if (!botaoCancelar.hasListener) {
+    botaoCancelar.addEventListener('click', () => {
+      const inputNome = li.querySelector('.cliente-nome-input');
+      const inputEmail = li.querySelector('.cliente-email-input');
+
+      inputNome.replaceWith(spanNome);
+      inputEmail.replaceWith(spanEmail);
+
+      botaoEditar.textContent = 'Editar';
+      botaoEditar.classList.remove('btn-salvar');
+      botaoCancelar.style.display = 'none';
+      botaoEditar.dataset.emEdicao = 'false';
+    });
+    botaoCancelar.hasListener = true;
+  }
+
+  // Retorna a função toggle para chamada externa
+  return toggleEdicao;
 }
 
 //DELETE (apenas UI)

@@ -16,7 +16,7 @@ const btnExcluirTodos = document.getElementById('excluir-todos');
 // DELETE
 function handleExcluirCliente(id, li, lista, mensagemVazia) {
   fetch(
-    `https://crudcrud.com/api/5cd5f13f6e654dccba31c19b9ee894ee/cadastro/${id}`,
+    `https://crudcrud.com/api/af4ab06f9272443899a6c8672e50e05e/cadastro/${id}`,
     {
       method: "DELETE",
     }
@@ -32,90 +32,31 @@ function handleExcluirCliente(id, li, lista, mensagemVazia) {
     .catch((error) => console.error("Erro ao excluir cliente:", error));
 }
 
-// EDIT
-function handleEditarCliente(id, li, lista, mensagemVazia) {
-  const spanNome = li.querySelector('.cliente-nome');
-  const spanEmail = li.querySelector('.cliente-email');
-  const botaoEditar = li.querySelector('.btn-editar');
-
-  // Salva valores originais
-  const nomeOriginal = spanNome.textContent;
-  const emailOriginal = spanEmail.textContent;
-
-  // Cria inputs
-  const inputNome = document.createElement('input');
-  inputNome.type = 'text';
-  inputNome.value = nomeOriginal;
-  inputNome.classList.add('cliente-nome-input');
-
-  const inputEmail = document.createElement('input');
-  inputEmail.type = 'email';
-  inputEmail.value = emailOriginal;
-  inputEmail.classList.add('cliente-email-input');
-
-  // Substitui spans por inputs
-  spanNome.replaceWith(inputNome);
-  spanEmail.replaceWith(inputEmail);
-
-  // Muda botão para "Salvar"
-  botaoEditar.textContent = 'Salvar';
-  botaoEditar.classList.add('btn-salvar');
-
-  // Cria botão "Cancelar"
-  const botaoCancelar = document.createElement('button');
-  botaoCancelar.textContent = 'Cancelar';
-  botaoCancelar.classList.add('btn-cancelar');
-  botaoCancelar.addEventListener('click', () => {
-    // Volta para spans
-    inputNome.replaceWith(spanNome);
-    inputEmail.replaceWith(spanEmail);
-    botaoEditar.textContent = 'Editar';
-    botaoEditar.classList.remove('btn-salvar');
-    botaoCancelar.remove();
-  });
-
-  // Adiciona botão Cancelar
-  li.appendChild(botaoCancelar);
-
-  // Função para salvar
-  const salvar = () => {
-    const novoNome = inputNome.value.trim();
-    const novoEmail = inputEmail.value.trim();
-
-    if (novoNome && novoEmail) {
-      fetch(
-        `https://crudcrud.com/api/5cd5f13f6e654dccba31c19b9ee894ee/cadastro/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ nome: novoNome, email: novoEmail })
+// EDITAR
+function handleEditarCliente(id, li) {
+  // Callback para salvar: faz o fetch PUT
+  const salvarCallback = (novoNome, novoEmail, onSuccess) => {
+    fetch(`https://crudcrud.com/api/af4ab06f9272443899a6c8672e50e05e/cadastro/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome: novoNome, email: novoEmail })
+    })
+      .then(() => {
+        // Atualiza array
+        const clienteIndex = listaClientes.findIndex(cliente => cliente._id === id);
+        if (clienteIndex !== -1) {
+          listaClientes[clienteIndex].nome = novoNome;
+          listaClientes[clienteIndex].email = novoEmail;
         }
-      )
-        .then(() => {
-          // Atualiza array
-          const clienteIndex = listaClientes.findIndex(cliente => cliente._id === id);
-          if (clienteIndex !== -1) {
-            listaClientes[clienteIndex].nome = novoNome;
-            listaClientes[clienteIndex].email = novoEmail;
-          }
-          // Atualiza UI
-          spanNome.textContent = novoNome;
-          spanEmail.textContent = novoEmail;
-          inputNome.replaceWith(spanNome);
-          inputEmail.replaceWith(spanEmail);
-          botaoEditar.textContent = 'Editar';
-          botaoEditar.classList.remove('btn-salvar');
-          botaoCancelar.remove();
-        })
-        .catch((error) => console.error("Erro ao editar cliente:", error));
-    }
+        onSuccess(); // Chama callback de UI
+      })
+      .catch(err => console.error('Erro ao salvar edição:', err));
   };
 
-  // Event listener para salvar (once para evitar múltiplos)
-  botaoEditar.addEventListener('click', salvar, { once: true });
+  // Retorna a callback para ui.js usar
+  return salvarCallback;
 }
+
 
 inicializarToggleClientes(
     btnToggle,
@@ -138,7 +79,7 @@ formCadastro.addEventListener('submit', (event) => {
     console.log('Tentando cadastrar cliente:', novoCliente);
 
     //POST
-    fetch('https://crudcrud.com/api/5cd5f13f6e654dccba31c19b9ee894ee/cadastro', {
+    fetch('https://crudcrud.com/api/af4ab06f9272443899a6c8672e50e05e/cadastro', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -162,7 +103,7 @@ formCadastro.addEventListener('submit', (event) => {
 //GET
 let listaClientes = [];
 console.log('Carregando clientes da API...');
-fetch('https://crudcrud.com/api/5cd5f13f6e654dccba31c19b9ee894ee/cadastro')
+fetch('https://crudcrud.com/api/af4ab06f9272443899a6c8672e50e05e/cadastro')
 .then(response => response.json())
 .then((clientes) => {
     console.log('Clientes carregados:', clientes);
@@ -182,7 +123,7 @@ btnExcluirTodos.addEventListener('click', () => {
 function excluirTodosClientes() {
     const deletions = listaClientes.map(cliente =>
         fetch(
-            `https://crudcrud.com/api/5cd5f13f6e654dccba31c19b9ee894ee/cadastro/${cliente._id}`,
+            `https://crudcrud.com/api/af4ab06f9272443899a6c8672e50e05e/cadastro/${cliente._id}`,
             { method: 'DELETE' }
         )
     );
