@@ -117,6 +117,11 @@ fetch('https://crudcrud.com/api/af4ab06f9272443899a6c8672e50e05e/cadastro')
 
 // Botão Excluir Todos
 btnExcluirTodos.addEventListener('click', () => {
+    const confirmar = confirm(
+        'Tem certeza que deseja excluir TODOS os clientes?\nEsta ação não pode ser desfeita.'
+    );
+    if (!confirmar)
+        return;
     excluirTodosClientes();
 });
 
