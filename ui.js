@@ -1,6 +1,6 @@
 let clientesVisiveis = false;
 
-export function adicionarClienteNaLista(cliente, lista, mensagemVazia) {
+export function adicionarClienteNaLista(cliente, lista, mensagemVazia, onExcluir) {
   const li = document.createElement("li");
   li.classList.add("cliente");
 
@@ -17,7 +17,7 @@ export function adicionarClienteNaLista(cliente, lista, mensagemVazia) {
   botaoExcluir.textContent = "Excluir";
 
   botaoExcluir.addEventListener("click", () => {
-    excluirCliente(cliente._id, li, lista, mensagemVazia);
+    onExcluir(cliente._id, li, lista, mensagemVazia);
   });
 
   li.append(spanNome, spanEmail, botaoExcluir);
@@ -26,19 +26,10 @@ export function adicionarClienteNaLista(cliente, lista, mensagemVazia) {
   atualizarUI(lista, mensagemVazia);
 }
 
-//DELETE
-function excluirCliente(id, li, lista, mensagemVazia) {
-  fetch(
-    `https://crudcrud.com/api/86a3419b74d54ac788a22363ddd2392f/cadastro/${id}`,
-    {
-      method: "DELETE",
-    }
-  )
-    .then(() => {
-      li.remove();
-      atualizarUI(lista, mensagemVazia);
-    })
-    .catch((error) => console.error("Erro ao excluir cliente:", error));
+//DELETE (apenas UI)
+export function excluirCliente(li, lista, mensagemVazia) {
+  li.remove();
+  atualizarUI(lista, mensagemVazia);
 }
 
 // Botão de mostrar/ocultar clientes

@@ -2,6 +2,7 @@ import { adicionarClienteNaLista } from './ui.js';
 import { inicializarToggleClientes } from './ui.js';
 import { atualizarEstadoBotaoExcluirTodos } from './ui.js';
 import { atualizarUI } from './ui.js';
+import { excluirCliente } from './ui.js';
 
 
 const btnToggle = document.getElementById('btn-toggle-clientes');
@@ -11,6 +12,25 @@ const inputNome = document.getElementById('nome');
 const inputEmail = document.getElementById('email');
 const msgSemClientes = document.getElementById('msg-sem-clientes');
 const btnExcluirTodos = document.getElementById('excluir-todos');
+
+// DELETE
+function handleExcluirCliente(id, li, lista, mensagemVazia) {
+  fetch(
+    `https://crudcrud.com/api/5cd5f13f6e654dccba31c19b9ee894ee/cadastro/${id}`,
+    {
+      method: "DELETE",
+    }
+  )
+    .then(() => {
+      // Remove do array
+      listaClientes = listaClientes.filter(cliente => cliente._id !== id);
+      // Remove da UI
+      excluirCliente(li, lista, mensagemVazia);
+      // Atualiza botão
+      atualizarEstadoBotaoExcluirTodos(btnExcluirTodos, lista);
+    })
+    .catch((error) => console.error("Erro ao excluir cliente:", error));
+}
 
 inicializarToggleClientes(
     btnToggle,
@@ -33,7 +53,7 @@ formCadastro.addEventListener('submit', (event) => {
     console.log('Tentando cadastrar cliente:', novoCliente);
 
     //POST
-    fetch('https://crudcrud.com/api/86a3419b74d54ac788a22363ddd2392f/cadastro', {
+    fetch('https://crudcrud.com/api/5cd5f13f6e654dccba31c19b9ee894ee/cadastro', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -43,7 +63,7 @@ formCadastro.addEventListener('submit', (event) => {
     .then((response) => response.json())
     .then((clienteCadastrado) => {
         console.log('Cliente cadastrado com sucesso:', clienteCadastrado);
-        adicionarClienteNaLista(clienteCadastrado, listaDeClientes, msgSemClientes);
+        adicionarClienteNaLista(clienteCadastrado, listaDeClientes, msgSemClientes, handleExcluirCliente);
         listaClientes.push(clienteCadastrado);
         atualizarEstadoBotaoExcluirTodos(btnExcluirTodos, listaDeClientes);
         formCadastro.reset();
@@ -57,13 +77,13 @@ formCadastro.addEventListener('submit', (event) => {
 //GET
 let listaClientes = [];
 console.log('Carregando clientes da API...');
-fetch('https://crudcrud.com/api/86a3419b74d54ac788a22363ddd2392f/cadastro')
+fetch('https://crudcrud.com/api/5cd5f13f6e654dccba31c19b9ee894ee/cadastro')
 .then(response => response.json())
 .then((clientes) => {
     console.log('Clientes carregados:', clientes);
     listaClientes = clientes;
     clientes.forEach((cliente) => {
-        adicionarClienteNaLista(cliente, listaDeClientes, msgSemClientes);
+        adicionarClienteNaLista(cliente, listaDeClientes, msgSemClientes, handleExcluirCliente);
     });
     atualizarEstadoBotaoExcluirTodos(btnExcluirTodos, listaDeClientes);
 })
@@ -77,7 +97,7 @@ btnExcluirTodos.addEventListener('click', () => {
 function excluirTodosClientes() {
     const deletions = listaClientes.map(cliente =>
         fetch(
-            `https://crudcrud.com/api/86a3419b74d54ac788a22363ddd2392f/cadastro/${cliente._id}`,
+            `https://crudcrud.com/api/5cd5f13f6e654dccba31c19b9ee894ee/cadastro/${cliente._id}`,
             { method: 'DELETE' }
         )
     );
@@ -93,7 +113,5 @@ function excluirTodosClientes() {
         .catch(err => console.error('Erro ao excluir todos:', err));
 }
 
-
-// Testar inserir cliente via Postman e ver aparecer no Live Server
 // Criar CSS
 // Estudar a possibilidade de ter a funcionalidade de editar cliente
