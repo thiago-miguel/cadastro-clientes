@@ -6,7 +6,7 @@ A proposta inicial era criar um sistema simples de cadastro de clientes utilizan
 
 ---
 
-## 🎯 Objetivo do Projeto
+## Objetivo do Projeto
 
 - Praticar consumo de APIs REST com `fetch`
 - Simular operações de banco de dados utilizando o CrudCrud
@@ -15,7 +15,7 @@ A proposta inicial era criar um sistema simples de cadastro de clientes utilizan
 
 ---
 
-## 🚀 Funcionalidades
+## Funcionalidades
 
 - Cadastro de clientes (Create)
 - Listagem de clientes sob demanda (Read)
@@ -27,7 +27,7 @@ A proposta inicial era criar um sistema simples de cadastro de clientes utilizan
 
 ---
 
-## 🧠 Conceitos e Técnicas Utilizadas
+## Conceitos e Técnicas Utilizadas
 
 - **Fetch API** para comunicação com a API do CrudCrud
 - Uso completo dos métodos do **CRUD** (`GET`, `POST`, `PUT`, `DELETE`)
@@ -46,7 +46,7 @@ A proposta inicial era criar um sistema simples de cadastro de clientes utilizan
 
 ---
 
-## 🛠 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - HTML5
 - CSS3
@@ -55,12 +55,12 @@ A proposta inicial era criar um sistema simples de cadastro de clientes utilizan
 
 ---
 
-## 📌 Observações
+## Observações
 
 Este projeto foi desenvolvido com foco em aprendizado e prática. O uso do CrudCrud permite simular um backend real sem a necessidade de configurar um servidor próprio, facilitando a experimentação com operações de persistência de dados.
 
 ---
 
-## 👤 Autor
+## Autor
 
 Projeto desenvolvido por **Thiago Miguel** como parte do aprendizado em desenvolvimento web e JavaScript.
